@@ -1,4 +1,6 @@
-import 'package:expenser_113/screen/home_page.dart';
+import 'package:expenser_113/constants.dart';
+import 'package:expenser_113/screen/home/home_page.dart';
+import 'package:expenser_113/screen/user_onboard/login/login_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -12,12 +14,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: Constants.APPNAME,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        textTheme: TextTheme(
+          bodyLarge: TextStyle(fontSize: 43)
+        ),
         primarySwatch: Colors.blue,
       ),
-      home: HomePage(),
+      home: LoginPage(),
     );
   }
 }
