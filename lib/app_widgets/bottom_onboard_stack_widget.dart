@@ -17,21 +17,15 @@ class BottomOnBoardStack extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        FittedBox(
-          fit: BoxFit.scaleDown,
-          child: Text(
-            title,
-            style: mTextStyle12(mColor: Colors.grey),
-          ),
+        Text(
+          title,
+          style: Theme.of(context).textTheme.titleSmall,
         ),
         InkWell(
             onTap: onPress,
-            child: FittedBox(
-              fit: BoxFit.scaleDown,
-              child: Text(
-                subTitle,
-                style: mTextStyle12(mWeight: FontWeight.bold),
-              ),
+            child: Text(
+              subTitle,
+              style: Theme.of(context).textTheme.titleSmall!.copyWith(fontWeight: FontWeight.bold),
             ))
       ],
     );

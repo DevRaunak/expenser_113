@@ -19,6 +19,48 @@ class AppColor{
 
 }
 
+class AppTheme{
+
+  static ThemeData darkTheme(){
+    return ThemeData(
+      brightness: Brightness.dark,
+      scaffoldBackgroundColor: Colors.black,
+      textTheme: TextTheme(
+          displayLarge: mTextStyle43(mColor: Colors.white, mWeight: FontWeight.bold),
+          titleLarge: mTextStyle34(mColor: Colors.white, mWeight: FontWeight.bold),
+          titleMedium: mTextStyle16(mColor: Colors.white),
+          titleSmall: mTextStyle12(mColor: Colors.white)
+      ),
+      appBarTheme: AppBarTheme(
+          backgroundColor: Colors.blue,
+          iconTheme: IconThemeData(
+              color: Colors.white
+          )
+      ),
+    );
+  }
+  static ThemeData lightTheme(){
+    return ThemeData(
+        brightness: Brightness.light,
+        textTheme: TextTheme(
+            displayLarge: mTextStyle43(mColor: Colors.white, mWeight: FontWeight.bold),
+            titleLarge: mTextStyle34(mColor: Colors.white, mWeight: FontWeight.bold),
+            titleMedium: mTextStyle16(mColor: Colors.white),
+            titleSmall: mTextStyle12(mColor: Colors.white)
+        ),
+        scaffoldBackgroundColor: Colors.blue,
+        primarySwatch: Colors.blue,
+        appBarTheme: AppBarTheme(
+            backgroundColor: Colors.blueGrey,
+            iconTheme: IconThemeData(
+                color: Colors.white
+            )
+        )
+    );
+  }
+
+}
+
 Widget widthSpacer({double mWidth = 11.0}){
   return SizedBox(width: mWidth,);
 }
