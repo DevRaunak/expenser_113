@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
         darkTheme: AppTheme.darkTheme(),
         theme: AppTheme.lightTheme(),
         themeMode: provider.getThemeMode() ? ThemeMode.dark : ThemeMode.light,
-        home: AddExpensePage(),
+        home: HomePage(),
       );
     });
   }
