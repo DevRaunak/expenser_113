@@ -39,10 +39,10 @@ class _AddExpensePageState extends State<AddExpensePage> {
     return SafeArea(
       child: Scaffold(
           body: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-        children: [
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
             //Title TextField
             TextField(
               controller: titleController,
@@ -52,7 +52,8 @@ class _AddExpensePageState extends State<AddExpensePage> {
             heightSpacer(),
             TextField(
               controller: descController,
-              decoration: fieldDecoration(hint: 'Enter desc..', labelText: 'Desc'),
+              decoration:
+                  fieldDecoration(hint: 'Enter desc..', labelText: 'Desc'),
             ),
             heightSpacer(),
             TextField(
@@ -155,44 +156,48 @@ class _AddExpensePageState extends State<AddExpensePage> {
                   setState(() {});
                 }),
 
-            BlocBuilder<ExpenseBloc, ExpenseState>(
-              builder: (ctx, state){
-              if(state is ExpenseLoadingState){
-                isLoading = true;
-              } else if(state is ExpenseLoadedState){
-                isLoading = false;
-              } else if(state is ExpenseErrorState){
-                isLoading = false;
-              }
-              return RoundedBtn(
-                  title: isLoading ? 'Adding Expense..' : 'Add Expense',
-                  isLoading: isLoading,
-                  onPress: () {
-                    if(selectedIndex!=-1 && catData!=null) {
-                      var balanceTillNow = 0;
-                      int amt = int.parse(amtController.text.toString());
+            BlocListener<ExpenseBloc, ExpenseState>(
+                listener: (ctx, state) {
+                  if (state is ExpenseLoadingState) {
+                    isLoading = true;
+                    setState(() {});
+                  } else if (state is ExpenseLoadedState) {
+                    isLoading = false;
+                    Navigator.pop(context);
+                    setState(() {});
+                  } else if (state is ExpenseErrorState) {
+                    isLoading = false;
+                    setState(() {});
+                  }
+                },
+                child: RoundedBtn(
+                    title: isLoading ? 'Adding Expense..' : 'Add Expense',
+                    isLoading: isLoading,
+                    onPress: () {
+                      if (selectedIndex != -1 && catData != null) {
+                        var balanceTillNow = 0;
+                        int amt = int.parse(amtController.text.toString());
 
-                      var newExpense = ExpenseModel(
-                          title: titleController.text.toString(),
-                          desc: descController.text.toString(),
-                          amount: amt,
-                          userId: 0,
-                          expenseType: selectedDropDownValue == 'Debit' ? 1 : 2,
-                          balance: selectedDropDownValue == 'Debit'
-                              ? balanceTillNow - amt
-                              : balanceTillNow + amt,
-                          categoryId: catData![selectedIndex].id,
-                          date: DateTime.now().toString()
-                      );
+                        var newExpense = ExpenseModel(
+                            title: titleController.text.toString(),
+                            desc: descController.text.toString(),
+                            amount: amt,
+                            userId: 0,
+                            expenseType:
+                                selectedDropDownValue == 'Debit' ? 1 : 2,
+                            balance: selectedDropDownValue == 'Debit'
+                                ? balanceTillNow - amt
+                                : balanceTillNow + amt,
+                            categoryId: catData![selectedIndex].id,
+                            date: DateTime.now().toString());
 
-                      BlocProvider.of<ExpenseBloc>(context)
-                          .add(AddExpenseEvent(newExpense: newExpense));
-                    }
-                  });
-            },)
-        ],
-      ),
-          )),
+                        BlocProvider.of<ExpenseBloc>(context)
+                            .add(AddExpenseEvent(newExpense: newExpense));
+                      }
+                    })),
+          ],
+        ),
+      )),
     );
   }
 }

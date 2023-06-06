@@ -265,7 +265,8 @@ class DbHelper {
   Future<List<ExpenseModel>> getExpenses() async {
     var db = await openDB();
     var sp = await SharedPreferences.getInstance();
-    var userId = sp.getInt('userId');
+    //var userId = sp.getInt('userId');
+    var userId = 0;
     var expensesList = await db
         .query(EXPENSE_TABLE, where: '$USER_ID = ?', whereArgs: ['$userId']);
     List<ExpenseModel> listExpenseModel = [];
