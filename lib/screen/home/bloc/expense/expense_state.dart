@@ -8,7 +8,7 @@ class ExpenseInitialState extends ExpenseState {}
 class ExpenseLoadingState extends ExpenseState {}
 
 class ExpenseLoadedState extends ExpenseState {
-  List<ExpenseModel> listExpenses;
+  List<Map<String, dynamic>> listExpenses;
   ExpenseLoadedState({required this.listExpenses});
 }
 

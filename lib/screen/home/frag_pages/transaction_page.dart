@@ -25,7 +25,7 @@ class _TransactionPageState extends State<TransactionPage> {
 
   var totalSpent = 0.0;
 
-  late List<ExpenseModel> arrExpenseData;
+  List<ExpenseModel> arrExpenseData = [];
   List<Map<String, dynamic>> arrDateWiseData = [];
   List<CatModel> arrCat = [];
   late DateTime date;
@@ -36,13 +36,6 @@ class _TransactionPageState extends State<TransactionPage> {
   void initState() {
     super.initState();
 
-    //Today date
-    date = DateTime.now();
-    var yesterday = date.subtract(Duration(days:1));
-    todayDate =
-        '${date.year}-${date.month.toString().length == 1 ? '0${date.month}' : date.month}-${date.day.toString().length == 1 ? '0${date.day}' : date.day}';
-    yesterdayDate =
-        '${yesterday.year}-${yesterday.month.toString().length == 1 ? '0${yesterday.month}' : yesterday.month}-${yesterday.day.toString().length == 1 ? '0${yesterday.day}' : yesterday.day}';
 
     //get All Transactions
 
@@ -91,10 +84,10 @@ class _TransactionPageState extends State<TransactionPage> {
                   return CircularProgressIndicator();
                 }
                 if (state is ExpenseLoadedState) {
-                  arrExpenseData = state.listExpenses.reversed.toList();
-                  print(arrExpenseData.length);
-                  if (arrExpenseData.isNotEmpty) {
-                    filterExpenseDateWise();
+                  arrDateWiseData = state.listExpenses;
+                  getAllExpenses();
+                  print(arrDateWiseData.length);
+                  if (arrDateWiseData.isNotEmpty) {
                     return Expanded(
                         flex: 15,
                         child: Column(
@@ -126,56 +119,16 @@ class _TransactionPageState extends State<TransactionPage> {
       ),
     );
   }
+  
+  void getAllExpenses(){
+    arrExpenseData.clear();
+    arrDateWiseData.forEach((eachDate) { 
+      arrExpenseData.addAll(eachDate['transactions'] as List<ExpenseModel>);
+    });
 
-  void filterExpenseDateWise() {
-    var uniqueDates = [];
-    arrDateWiseData.clear();
-
-    for (ExpenseModel model in arrExpenseData) {
-      var eachDateFormat = DateTime.parse(model.date!);
-
-      var eachDate =
-          '${eachDateFormat.year}-${eachDateFormat.month.toString().length == 1 ? '0${eachDateFormat.month}' : eachDateFormat.month}-${eachDateFormat.day.toString().length == 1 ? '0${eachDateFormat.day}' : eachDateFormat.day}';
-      print(eachDate);
-
-      if (!uniqueDates.contains(eachDate)) {
-        uniqueDates.add(eachDate);
-      }
-    }
-
-    for (String eachDate in uniqueDates) {
-      List<ExpenseModel> eachDateTransactions = arrExpenseData
-          .where((element) => element.date!.contains(eachDate))
-          .toList();
-
-      print(todayDate);
-      print(yesterdayDate);
-      if (eachDate == todayDate) {
-        eachDate = 'Today';
-      } else if (eachDate == yesterdayDate) {
-        eachDate = 'Yesterday';
-      }
-
-      var eachDayAmt = 0.0;
-
-      eachDateTransactions.forEach((transaction) {
-        if(transaction.expenseType==1){
-          eachDayAmt -= transaction.amount!;
-        } else {
-          eachDayAmt += transaction.amount!;
-        }
-      });
-
-      Map<String, dynamic> eachDateMap = {};
-      eachDateMap['day'] = '$eachDate';
-      eachDateMap['amt'] = eachDayAmt.isNegative ? '${eachDayAmt}' : '+${eachDayAmt}';
-      eachDateMap['transactions'] = eachDateTransactions;
-
-      arrDateWiseData.add(eachDateMap);
-    }
-
-    print(arrDateWiseData);
   }
+
+
 
   Widget getAllTransactionsDateWise(Map<String, dynamic> dayWiseData) {
     return Column(
@@ -194,7 +147,7 @@ class _TransactionPageState extends State<TransactionPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      dayWiseData['day'],
+                      dayWiseData['month'],
                       style: mTextStyle12(mColor: AppColor.secondaryColor),
                     ),
                     Text(
@@ -337,6 +290,7 @@ class _TransactionPageState extends State<TransactionPage> {
 
   void calculateTotalSpent() {
     totalSpent = 0.0;
+    print(arrExpenseData);
     arrExpenseData.forEach((expense) {
       if(expense.expenseType==1){
         //debit

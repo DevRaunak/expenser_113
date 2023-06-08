@@ -17,7 +17,7 @@ class ExpenseBloc extends Bloc<ExpenseEvent, ExpenseState> {
       emit(ExpenseLoadingState());
       var check = await repo.addExpense(event.newExpense);
       if(check){
-        var allExpense = await repo.getExpense();
+        var allExpense = await repo.getExpensesMonthWise();
         emit(ExpenseLoadedState(listExpenses: allExpense));
       } else {
         emit(ExpenseErrorState(errorMsg: "Expense not added!!"));
@@ -26,7 +26,7 @@ class ExpenseBloc extends Bloc<ExpenseEvent, ExpenseState> {
 
     on<GetExpenseEvent>((event, emit) async{
       emit(ExpenseLoadingState());
-      var allExpense = await repo.getExpense();
+      var allExpense = await repo.getExpensesMonthWise();
       emit(ExpenseLoadedState(listExpenses: allExpense));
     });
 
