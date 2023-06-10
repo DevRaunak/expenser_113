@@ -4,6 +4,7 @@ import 'package:expenser_113/provider/app_provider.dart';
 import 'package:expenser_113/screen/add_expense/add_expense_page.dart';
 import 'package:expenser_113/screen/home/bloc/cat/cat_bloc.dart';
 import 'package:expenser_113/screen/home/bloc/expense/expense_bloc.dart';
+import 'package:expenser_113/screen/home/frag_pages/stats_graph_page.dart';
 import 'package:expenser_113/screen/home/home_page.dart';
 import 'package:expenser_113/screen/home/repo/expense_repo.dart';
 import 'package:expenser_113/screen/user_onboard/login/login_page.dart';
@@ -41,7 +42,7 @@ class MyApp extends StatelessWidget {
         darkTheme: AppTheme.darkTheme(),
         theme: AppTheme.lightTheme(),
         themeMode: provider.getThemeMode() ? ThemeMode.dark : ThemeMode.light,
-        home: HomePage(),
+        home: StatsGraphPage(),
       );
     });
   }
